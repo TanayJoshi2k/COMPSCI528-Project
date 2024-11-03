@@ -50,3 +50,4 @@ I (338) i2c-simple-example: I2C de-initialized successfully
 ## Troubleshooting
 
 (For any technical queries, please open an [issue](https://github.com/espressif/esp-idf/issues) on GitHub. We will get back to you as soon as possible.)
+# COMPSCI528-Project

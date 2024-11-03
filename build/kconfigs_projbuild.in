@@ -1,0 +1,6 @@
+source "E:/EspressIf/ESP-IDF/components/bootloader/Kconfig.projbuild"
+source "E:/EspressIf/ESP-IDF/components/esp_app_format/Kconfig.projbuild"
+source "E:/EspressIf/ESP-IDF/components/esp_rom/Kconfig.projbuild"
+source "E:/EspressIf/ESP-IDF/components/esptool_py/Kconfig.projbuild"
+source "E:/EspressIf/ESP-IDF/components/partition_table/Kconfig.projbuild"
+source "E:/Mobile_Ubiquitous_ESP/UAV-automation/IMU/main/Kconfig.projbuild"
