@@ -10,9 +10,9 @@ df = pd.DataFrame(columns=column_names)
 
 serial_port = 'COM4'  
 baud_rate = 115200 
-ser = serial.Serial(serial_port, baud_rate, timeout=1)
+ser = serial.Serial(serial_port, baud_rate, timeout=0.01)
 
-gestures = ["UP","DOWN","LEFT","RIGHT"]
+gestures = ["UP","DOWN","LEFT","RIGHT","CLOCKWISE","ANTICLOCKWISE"]
 #gesture = int(input("Enter the gesture type (1:UP/2:DOWN/3:LEFT/4:RIGHT): "))
 
 gesture = int(sys.argv[1])
@@ -39,7 +39,7 @@ try:
                     x+=1
                 except ValueError:
                     print("Value error")
-            time.sleep(0.01)         
+            #time.sleep(0.01)         
         
 
 
