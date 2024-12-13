@@ -16,19 +16,20 @@ baud_rate = 115200
 ser = serial.Serial(serial_port, baud_rate, timeout=0.01)
 
 # Load the trained model
-loaded_model = joblib.load('Trained_model/svm_model_5class_full.pkl')
+loaded_model = joblib.load('Trained_model/xgboost_model.pkl')
 
 # Labels for predictions
-labels = ["UP", "DOWN", "LEFT", "RIGHT", "REST"]
+labels = ["UP","DOWN","LEFT","RIGHT","REST","FORWARD","BACKWARD","NEW_CLOCKWISE"]
+#labels = ["UP","DOWN","LEFT","RIGHT","REST"]
 
 # Tkinter GUI setup
-root = tk.Tk()
-root.title("Hand Gesture Prediction")
-root.geometry("300x100")
+# root = tk.Tk()
+# root.title("Hand Gesture Prediction")
+# root.geometry("300x100")
 
 # Variable to display prediction
-predicted_label = StringVar()
-predicted_label.set("Waiting for prediction...")
+# predicted_label = StringVar()
+# predicted_label.set("Waiting for prediction...")
 
 # Sliding window parameters
 window_size = 400  # Number of rows for prediction
@@ -60,7 +61,8 @@ def preprocess_data_for_inference(df, fixed_length=400):
         data = df[['gyro_x', 'gyro_y', 'gyro_z', 'acce_x', 'acce_y', 'acce_z']].values.astype(np.float32)
         
         # Normalize data
-        data = (data - data.min(axis=0)) / (data.max(axis=0) - data.min(axis=0) + 1e-8)  # Avoid division by zero
+        #data = (data - data.min(axis=0)) / (data.max(axis=0) - data.min(axis=0) + 1e-8)  # Avoid division by zero
+        data = (data - data.mean(axis=0))
 
         # Adjust data length
         if len(data) > fixed_length:
@@ -121,23 +123,23 @@ def main_loop():
                     try:
                         # Predict gesture with confidence
                         prediction, confidence = predict_gesture(df)
-                        predicted_label.set(f"{prediction} ({confidence*100:.1f}%)")  # Update GUI with prediction
+                        #predicted_label.set(f"{prediction} ({confidence*100:.1f}%)")  # Update GUI with prediction
                         print(f"Predicted Gesture: {prediction} with Confidence: {confidence*100:.1f}%")
-                        #df.to_csv(f"Testing/{types}_{prediction}.csv")
-                        #types+=1
+                        df.to_csv(f"Testing/{types}_{prediction}.csv")
+                        types+=1
                     except Exception as e:
-                        predicted_label.set("Error")
+                        #predicted_label.set("Error")
                         print(f"Prediction error: {e}")
         else:
             # Reset for the next round of data collection
             collecting = True
             df = pd.DataFrame(columns=column_names)  # Clear the buffer
-            predicted_label.set("Waiting for prediction...")  # Reset GUI display
+            #predicted_label.set("Waiting for prediction...")  # Reset GUI display
             time.sleep(1)
 
         # Update the GUI to reflect changes
-        root.update_idletasks()
-        root.update()
+        #root.update_idletasks()
+        #root.update()
 
 
 
@@ -147,4 +149,4 @@ try:
 except KeyboardInterrupt:
     print("Exiting program.")
     ser.close()
-    root.destroy()
+    #froot.destroy()
