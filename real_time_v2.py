@@ -58,7 +58,10 @@ def preprocess_data_for_inference(df, fixed_length=400):
     """
     if not df.empty:
         # Select required columns and convert to NumPy array
-        data = df[['gyro_x', 'gyro_y', 'gyro_z', 'acce_x', 'acce_y', 'acce_z']].values.astype(np.float32)
+        df['acce_magnitude'] = np.sqrt(df['acce_x']**2 + df['acce_y']**2 + df['acce_z']**2)
+        df['gyro_magnitude'] = np.sqrt(df['gyro_x']**2 + df['gyro_y']**2 + df['gyro_z']**2) 
+
+        data = df[['gyro_x', 'gyro_y', 'gyro_z', 'acce_x', 'acce_y', 'acce_z',"acce_magnitude", "gyro_magnitude"]].values.astype(np.float32)
         
         # Normalize data
         #data = (data - data.min(axis=0)) / (data.max(axis=0) - data.min(axis=0) + 1e-8)  # Avoid division by zero
@@ -117,6 +120,7 @@ def main_loop():
             sensor_data = read_sensor_data(ser)
             if sensor_data:
                 df.loc[len(df)] = sensor_data  # Append new row to DataFrame
+                print(len(df))
                 if len(df) == window_size:
                     # Stop collecting and switch to prediction
                     collecting = False
@@ -133,9 +137,14 @@ def main_loop():
         else:
             # Reset for the next round of data collection
             collecting = True
+            time.sleep(2)
+            ser.reset_input_buffer()
+            #print("Time delay over")
+            df = None
             df = pd.DataFrame(columns=column_names)  # Clear the buffer
+            #print(len(df))
             #predicted_label.set("Waiting for prediction...")  # Reset GUI display
-            time.sleep(1)
+            
 
         # Update the GUI to reflect changes
         #root.update_idletasks()

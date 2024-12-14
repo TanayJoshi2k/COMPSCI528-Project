@@ -14,7 +14,7 @@ serial_port = 'COM4'
 baud_rate = 115200 
 ser = serial.Serial(serial_port, baud_rate, timeout=0.01)
 
-gestures = ["UP","DOWN","LEFT","RIGHT","NEW_CLOCKWISE","REST","FORWARD","BACKWARD"]
+gestures = ["UP","DOWN","LEFT","NEW_RIGHT","NEW_CLOCKWISE","REST","FORWARD","BACKWARD"]
 #gesture = int(input("Enter the gesture type (1:UP/2:DOWN/3:LEFT/4:RIGHT): "))
 
 gesture = int(sys.argv[1])
