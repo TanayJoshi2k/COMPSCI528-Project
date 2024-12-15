@@ -16,7 +16,7 @@ baud_rate = 115200
 ser = serial.Serial(serial_port, baud_rate, timeout=0.01)
 
 # Load the trained model
-loaded_model = joblib.load('Trained_model/xgboost_model.pkl')
+loaded_model = joblib.load('Trained_model/xgboost_model_v2.pkl')
 
 # Labels for predictions
 labels = ["UP","DOWN","LEFT","RIGHT","REST","FORWARD","BACKWARD","NEW_CLOCKWISE"]
